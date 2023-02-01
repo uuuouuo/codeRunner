@@ -1,8 +1,9 @@
 import React from "react";
-import "./App.css";
-
-function App() {
-  return <div></div>;
-}
+import { Route, Switch } from "react-router-dom";
+const App = () => (
+  <Switch>
+    <Route></Route>
+  </Switch>
+);
 
 export default App;
