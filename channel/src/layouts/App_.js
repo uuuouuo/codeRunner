@@ -1,9 +1,10 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Workspace from "./Workspace";
 const App = () => (
-  <Switch>
-    <Route></Route>
-  </Switch>
+  <Routes>
+    <Route path="/" element={<Workspace />} />
+  </Routes>
 );
 
 export default App;
