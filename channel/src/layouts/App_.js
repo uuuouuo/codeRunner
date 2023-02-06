@@ -1,10 +1,14 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import Workspace from "./Workspace";
+
+const Workspace = lazy(() => import("./Workspace"));
+
 const App = () => (
-  <Routes>
-    <Route path="/" element={<Workspace />} />
-  </Routes>
+  <Suspense fallback={<div>Loading...</div>}>
+    <Routes>
+      <Route path="/" element={<Workspace />} />
+    </Routes>
+  </Suspense>
 );
 
 export default App;

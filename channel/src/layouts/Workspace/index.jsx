@@ -1,5 +1,7 @@
 import React from "react";
+import ChannelList from "../../components/ChannelList";
 import Menu from "../../components/Menu";
+
 import {
   AddButton,
   Channels,
@@ -54,6 +56,8 @@ const Workspace = () => {
                 <button>로그아웃</button>
               </WorkspaceModal>
             </Menu>
+            <ChannelList />
+            {/* <DMList/> */}
           </MenuScroll>
         </Channels>
         <Chats></Chats>
