@@ -1,5 +1,6 @@
 import React from "react";
 import ChannelList from "../../components/ChannelList";
+//import CreateChannelModal from "../../components/CreateChannelModal";
 import Menu from "../../components/Menu";
 
 import {
@@ -62,6 +63,7 @@ const Workspace = () => {
         </Channels>
         <Chats></Chats>
       </WorkspaceWrapper>
+      {/* <CreateChannelModal /> */}
     </div>
   );
 };

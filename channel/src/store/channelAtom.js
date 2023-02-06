@@ -9,7 +9,7 @@ export const channelSelector = selector({
   key: "channelList",
   get: async () => {
     try {
-      const { data } = await axios.get("http://localhost:8085/channel/get");
+      const { data } = await axios.get("http://localhost:8083/channel/get");
       return data;
     } catch (err) {
       console.error(err);
