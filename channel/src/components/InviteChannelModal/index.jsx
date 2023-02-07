@@ -1,16 +1,12 @@
 import React, { useCallback } from "react";
-import { Button, Input, Label } from "../InviteWorkspaceModal/styles";
+import { Button, Input, Label } from "../CreateChannelModal/styles";
 import Modal from "../Modal";
 import PropTypes from "prop-types";
 import axios from "axios";
 import useInput from "../../hooks/useInput";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-InviteChannelModal.propTypes = {
-  show: PropTypes.bool,
-  onCloseModal: PropTypes.any,
-  setShowInviteChannelModal: PropTypes.any,
-};
+
 const InviteChannelModal = ({
   show,
   onCloseModal,
@@ -50,6 +46,12 @@ const InviteChannelModal = ({
       </form>
     </Modal>
   );
+};
+
+InviteChannelModal.propTypes = {
+  show: PropTypes.bool,
+  onCloseModal: PropTypes.any,
+  setShowInviteChannelModal: PropTypes.any,
 };
 
 export default InviteChannelModal;

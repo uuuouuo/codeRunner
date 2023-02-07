@@ -6,12 +6,6 @@ import { Button, Input, Label } from "./styles";
 import { toast } from "react-toastify";
 import useInput from "../../hooks/useInput";
 
-CreateChannelModal.propTypes = {
-  show: PropTypes.bool,
-  onCloseModal: PropTypes.any,
-  setShowCreateChannelModal: PropTypes.any,
-};
-
 const CreateChannelModal = ({
   show,
   onCloseModal,
@@ -56,6 +50,12 @@ const CreateChannelModal = ({
       </form>
     </Modal>
   );
+};
+
+CreateChannelModal.propTypes = {
+  show: PropTypes.bool,
+  onCloseModal: PropTypes.any,
+  setShowCreateChannelModal: PropTypes.any,
 };
 
 export default CreateChannelModal;
