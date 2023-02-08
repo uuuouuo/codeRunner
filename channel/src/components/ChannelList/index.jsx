@@ -44,7 +44,7 @@ const ChannelList = () => {
               <NavLink
                 key={channel.name}
                 activeClassName="selected"
-                to={"/"}
+                to={`/channel/${channel.name}`}
                 onClick={resetCount(`c-${channel.channel_id}`)}
               >
                 <span

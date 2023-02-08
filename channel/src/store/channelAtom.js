@@ -18,7 +18,7 @@ export const channelListSelector = selector({
   set: ({ set }, newValue) => set(channelListAtom, newValue),
 });
 
-export const channelDataSelector = selector({
-  key: "channelData",
-  get: "",
-});
+// export const channelDataSelector = selector({
+//   key: "channelData",
+//   get: "",
+// });
