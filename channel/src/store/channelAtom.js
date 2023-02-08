@@ -1,11 +1,11 @@
 import { atom, selector } from "recoil";
 import axios from "axios";
-export const channelAtom = atom({
+export const channelListAtom = atom({
   key: "channelAtom",
   default: "",
 });
 
-export const channelSelector = selector({
+export const channelListSelector = selector({
   key: "channelList",
   get: async () => {
     try {
@@ -15,5 +15,10 @@ export const channelSelector = selector({
       console.error(err);
     }
   },
-  set: ({ set }, newValue) => set(channelAtom, newValue),
+  set: ({ set }, newValue) => set(channelListAtom, newValue),
+});
+
+export const channelDataSelector = selector({
+  key: "channelData",
+  get: "",
 });

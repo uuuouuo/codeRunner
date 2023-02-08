@@ -2,10 +2,10 @@ import React, { useState, useCallback } from "react";
 import { CollapseButton } from "../DMList/styles";
 import { NavLink } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { channelSelector } from "../../store/channelAtom";
+import { channelListSelector } from "../../store/channelAtom";
 const ChannelList = () => {
   const [channelCollapse, setChannelCollapse] = useState(false);
-  const [channelData] = useRecoilState(channelSelector);
+  const [channelData] = useRecoilState(channelListSelector);
   const toggleChannelCollapse = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);

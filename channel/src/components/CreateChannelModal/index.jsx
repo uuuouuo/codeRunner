@@ -21,8 +21,6 @@ const CreateChannelModal = ({
       axios
         .post(`http://localhost:8083/channel/post`, {
           name: newChannel,
-          outline: "",
-          private: "",
         })
         .then(() => {
           setShowCreateChannelModal(false);

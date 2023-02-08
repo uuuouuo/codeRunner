@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { Outlet } from "react-router-dom";
 import ChannelList from "../../components/ChannelList";
 import CreateChannelModal from "../../components/CreateChannelModal";
 import DMList from "../../components/DMList";
@@ -101,7 +102,9 @@ const Workspace = () => {
             <DMList />
           </MenuScroll>
         </Channels>
-        <Chats></Chats>
+        <Chats>
+          <Outlet />
+        </Chats>
       </WorkspaceWrapper>
       <CreateChannelModal
         show={showCreateChannelModal}
