@@ -105,6 +105,7 @@ const Workspace = () => {
         </Channels>
         <Chats>
           <Outlet />
+          <Outlet />
         </Chats>
       </WorkspaceWrapper>
       <CreateChannelModal

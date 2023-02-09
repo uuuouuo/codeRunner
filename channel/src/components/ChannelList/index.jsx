@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { CollapseButton } from "../DMList/styles";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { channelListSelector } from "../../store/channelAtom";
 const ChannelList = () => {
@@ -10,6 +10,7 @@ const ChannelList = () => {
     setChannelCollapse((prev) => !prev);
   }, []);
   const [countList, setCountList] = useState({});
+  const location = useLocation();
   const resetCount = useCallback(
     (id) => () => {
       setCountList((list) => {
@@ -21,6 +22,10 @@ const ChannelList = () => {
     },
     []
   );
+  useEffect(() => {
+    setCountList({});
+  }, [location]);
+
   return (
     <>
       <h2>
@@ -34,7 +39,7 @@ const ChannelList = () => {
             aria-hidden="true"
           />
         </CollapseButton>
-        / <span>Channels</span>
+        <span>Channels</span>
       </h2>
       <div>
         {!channelCollapse &&

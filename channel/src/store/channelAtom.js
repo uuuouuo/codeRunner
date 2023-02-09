@@ -1,12 +1,22 @@
-import { atom, selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 import axios from "axios";
+
 export const channelListAtom = atom({
-  key: "channelAtom",
+  key: "channelList",
+  default: "",
+});
+export const channelDataAtom = atom({
+  key: "channelData",
+  default: "",
+});
+
+export const channelMembersAtom = atom({
+  key: "channelMembers",
   default: "",
 });
 
 export const channelListSelector = selector({
-  key: "channelList",
+  key: "channelListSelector",
   get: async () => {
     try {
       const { data } = await axios.get("http://localhost:8083/channel/get");
@@ -15,10 +25,32 @@ export const channelListSelector = selector({
       console.error(err);
     }
   },
-  set: ({ set }, newValue) => set(channelListAtom, newValue),
 });
 
-// export const channelDataSelector = selector({
-//   key: "channelData",
-//   get: "",
-// });
+export const channelMemberSelector = selectorFamily({
+  key: "channelMemberSelector",
+  get: (id) => async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8083/channel/${id}/users/get`
+      );
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+});
+export const channelDataSelector = selectorFamily({
+  key: "channelDataSelector",
+  get: (id) => async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8083/channel/${id}/get`
+      );
+      return data;
+    } catch (err) {
+      console.err(err);
+    }
+  },
+  set: ({ set }, newValue) => set(channelDataAtom, newValue),
+});
