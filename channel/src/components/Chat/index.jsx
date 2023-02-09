@@ -1,7 +1,9 @@
 import React from "react";
 import { ChatWrapper } from "./styles";
 
-const Chat = () => {
+// eslint-disable-next-line react/prop-types
+const Chat = ({ data }) => {
+  data;
   return (
     <ChatWrapper>
       <div className="chat-img">

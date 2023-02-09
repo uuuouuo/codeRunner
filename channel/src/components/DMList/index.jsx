@@ -5,13 +5,14 @@ import { useRecoilValue } from "recoil";
 import { channelMemberSelector } from "../../store/channelAtom";
 
 const DMList = () => {
+  const channel = "일반채널";
   const [channelCollapse, setChannelCollapse] = useState(false);
   const toggleChannelCollapse = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
   const [countList, setCountList] = useState({});
   const [onlineList] = useState([]);
-  const memberData = useRecoilValue(channelMemberSelector(1));
+  const memberData = useRecoilValue(channelMemberSelector(channel));
   //const userData = fetch("http://localhost:8081/user/list");
   const resetCount = useCallback(
     (id) => () => {
