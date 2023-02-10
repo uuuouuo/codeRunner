@@ -1,5 +1,6 @@
 package com.example.chat.config;
 
+import com.example.chat.model.dto.MessageDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,18 +10,16 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-
 @Configuration
-//@EnableRedisRepositories
+@EnableRedisRepositories
 public class RedisConfig {
 
     @Value("${spring.redis.host}")
@@ -63,6 +62,15 @@ public class RedisConfig {
     }
 
     @Bean
+    public RedisTemplate<String, MessageDto> chatRedisTemplate(RedisConnectionFactory connectionFactory){
+        RedisTemplate<String, MessageDto> chatRedisTemplate = new RedisTemplate<>();
+        chatRedisTemplate.setConnectionFactory(connectionFactory);
+        chatRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        chatRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(MessageDto.class));
+        return chatRedisTemplate;
+    }
+
+    @Bean
     public RedisCacheManager redisCacheManager() {
 
         RedisCacheConfiguration redisCacheConfiguration
@@ -75,17 +83,15 @@ public class RedisConfig {
                         RedisSerializationContext.SerializationPair.fromSerializer(
                                 new GenericJackson2JsonRedisSerializer()));
 
-        // 해당 레디스 설정을 담으며, 게시글 조회에 사용할 캐쉬 이름은 MESSAGE 특히, 해당 캐쉬는 5분동안 유지
-        Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
-        redisCacheConfigurationMap.put("MESSAGE",
-                redisCacheConfiguration.entryTtl(Duration.ofMinutes(5)));
-
-
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory())
                 .cacheDefaults(redisCacheConfiguration)
-                .withInitialCacheConfigurations(redisCacheConfigurationMap)
                 .build();
 
+    }
+
+    @Bean
+    public ChannelTopic channelTopic() {
+        return new ChannelTopic("TOPIC");
     }
 }
