@@ -40,6 +40,7 @@ export const channelMemberSelector = selectorFamily({
     }
   },
 });
+
 export const channelDataSelector = selectorFamily({
   key: "channelDataSelector",
   get: (id) => async () => {
