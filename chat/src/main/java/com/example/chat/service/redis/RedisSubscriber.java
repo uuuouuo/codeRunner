@@ -1,6 +1,6 @@
 package com.example.chat.service.redis;
 
-import com.example.chat.test.TestMessage;
+import com.example.chat.model.dto.ChatPostDto.ChatPostReq;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.Message;
@@ -19,15 +19,14 @@ public class RedisSubscriber implements MessageListener {
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
+
         try {
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-//            ChatMessageDto chatMessage = objectMapper.readValue(publishMessage, ChatMessageDto.class);
+            ChatPostReq chatMessage = objectMapper.readValue(publishMessage, ChatPostReq.class);
 
-            // TEST <<<<<<<<<<<<
-            TestMessage chatMessage = objectMapper.readValue(publishMessage, TestMessage.class);
-            //>>>>>>>>>>>>>>
             messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             /* 나중에
 
              */
