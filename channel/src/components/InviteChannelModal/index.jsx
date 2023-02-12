@@ -21,7 +21,7 @@ const InviteChannelModal = ({
         return;
       }
       axios
-        .post(`http://localhost:8083/channel/${id}/user/post`, {
+        .post(`http://localhost:8082/channel/${id}/user/post`, {
           user_id: newMember,
         })
         .then(() => {

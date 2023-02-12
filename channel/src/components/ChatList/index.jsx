@@ -1,30 +1,12 @@
-import React, { useCallback } from "react";
+import React from "react";
 import Chat from "../Chat";
 import { ChatZone, Section, StickyHeader } from "./styles";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import PropTypes from "prop-types";
-const ChatList = ({
-  scrollbarRef,
-  isReachingEnd,
-  isEmpty,
-  chatSections,
-  setSize,
-}) => {
-  const onScroll = useCallback(
-    (values) => {
-      if (values.scrollTop === 0 && !isReachingEnd && !isEmpty) {
-        setSize((size) => size + 1).then(() => {
-          scrollbarRef.current?.scrollTop(
-            scrollbarRef.current?.getScrollHeight() - values.scrollHeight
-          );
-        });
-      }
-    },
-    [setSize, scrollbarRef, isReachingEnd, isEmpty]
-  );
+const ChatList = ({ scrollbarRef, chatSections }) => {
   return (
     <ChatZone>
-      <Scrollbars autoHide ref={scrollbarRef} onScrollFrame={onScroll}>
+      <Scrollbars autoHide ref={scrollbarRef}>
         {Object.entries(chatSections).map(([date, chats]) => {
           return (
             <Section className={`section-${date}`} key={date}>

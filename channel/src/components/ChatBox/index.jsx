@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import autosize from "autosize";
 import { Mention } from "react-mentions";
 import gravatar from "gravatar";
-
+import { RiSendPlane2Fill } from "react-icons/ri";
 const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }) => {
   const textareaRef = useRef(null);
   useEffect(() => {
@@ -80,10 +80,7 @@ const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }) => {
             type="submit"
             disabled={!chat?.trim()}
           >
-            <i
-              className="c-icon c-icon--paperplane-filled"
-              aria-hidden="true"
-            />
+            <RiSendPlane2Fill size={28} />
           </SendButton>
         </Toolbox>
       </Form>

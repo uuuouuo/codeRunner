@@ -19,7 +19,7 @@ const CreateChannelModal = ({
         return;
       }
       axios
-        .post(`http://localhost:8083/channel/post`, {
+        .post(`http://localhost:8082/channel/post`, {
           name: newChannel,
           user_id: "",
         })

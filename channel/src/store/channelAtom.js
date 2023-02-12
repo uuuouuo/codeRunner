@@ -19,7 +19,7 @@ export const channelListSelector = selector({
   key: "channelListSelector",
   get: async () => {
     try {
-      const { data } = await axios.get("http://localhost:8083/channel/get");
+      const { data } = await axios.get("http://localhost:8082/channel/get");
       return data;
     } catch (err) {
       console.error(err);
@@ -32,7 +32,7 @@ export const channelMemberSelector = selectorFamily({
   get: (id) => async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8083/channel/${id}/users/get`
+        `http://localhost:8082/channel/${id}/users/get`
       );
       return data;
     } catch (err) {
@@ -46,7 +46,7 @@ export const channelDataSelector = selectorFamily({
   get: (id) => async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8083/channel/${id}/get`
+        `http://localhost:8082/channel/${id}/get`
       );
       return data;
     } catch (err) {

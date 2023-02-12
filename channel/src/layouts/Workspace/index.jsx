@@ -110,6 +110,7 @@ const Workspace = () => {
       <CreateChannelModal
         show={showCreateChannelModal}
         onCloseModal={onCloseModal}
+        setShowCreateChannelModal={setShowCreateChannelModal}
       />
       <InviteChannelModal onCloseModal={onCloseModal} />
       <ToastContainer position="bottom-center" />
