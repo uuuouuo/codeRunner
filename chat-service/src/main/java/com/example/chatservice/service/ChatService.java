@@ -1,6 +1,6 @@
 package com.example.chatservice.service;
 
-import com.example.chatservice.client.UserClient;
+//import com.example.chatservice.client.UserClient;
 import com.example.chatservice.model.dto.ChatPostDto;
 import com.example.chatservice.model.dto.ChatPostDto.ChatPostReq;
 import com.example.chatservice.model.dto.ChatRoomDto;
@@ -35,7 +35,7 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserChatRepository userChatRepository;
     private final ChatPostRepository chatPostRepository;
-    private final UserClient userClient;
+//    private final UserClient userClient;
 
     @Transactional
     public Map<String, Object> makeChatRoom(ChatRoomReq request) {
