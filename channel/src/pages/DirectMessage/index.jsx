@@ -7,49 +7,42 @@ import { Container, Header } from "./styles";
 import { channelMemberSelector } from "../../store/channelAtom";
 import useInput from "../../hooks/useInput";
 import makeSection from "../../utils/makeSection";
-import { stompClient } from "../../utils/socketClient";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+
 //import axios from "axios";
 const DirectMessage = () => {
   const { roomId } = useParams();
   const userData = useRecoilValue(channelMemberSelector(roomId));
-  const myData = "인간";
   // 위에 부분 수정해야함
+  const myData = "인간";
   const [chat, onChangeChat] = useInput("");
-  let chatData = "";
+
+  let chatData = ["일단은", "gg", ["아모르"]];
   const scrollbarRef = useRef(null);
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
-  stompClient.connect({}, () => {
-    console.log("connected!");
-  });
+  const sock = new SockJS("http://localhost:8083/ws-stomp");
+  const StompClient = Stomp.over(sock);
+  StompClient.connect(
+    { "client-id": "my-client-id" },
+    "",
+    () => {
+      StompClient.subscribe(`sub/chat/room/${roomId}`, (message) => {
+        console.log(message);
+      });
+      StompClient.send("/pub/chat/message", chat);
+    },
+    function (frame) {
+      console.log(frame + "Web socket disconnected");
+    }
+  );
+
   const onSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
-      // if (chat?.trim() && chatData) {
-      //   const savedChat = chat;
-      //   mutateChat((prevChatData) => {
-      //     prevChatData?.[0].unshift({
-      //       id: (chatData[0][0]?.id || 0) + 1,
-      //       content: savedChat,
-      //       SenderId: myData.id,
-      //       Sender: myData,
-      //       ReceiverId: userData.id,
-      //       Receiver: userData,
-      //       createdAt: new Date(),
-      //     });
-      //     return prevChatData;
-      //   }, false).then(() => {
-      //     setChat("");
-      //     if (scrollbarRef.current) {
-      //       console.log("scrollToBottom!", scrollbarRef.current?.getValues());
-      //       scrollbarRef.current.scrollToBottom();
-      //     }
-      //   });
-      //   axios
-      //     .post(``, {
-      //       content: chat,
-      //     })
-      //     .catch(console.error);
-      // }
+      if (chat?.trim() && chatData) {
+        ("");
+      }
     },
     [chat, roomId, myData, userData, chatData]
   );
@@ -67,14 +60,14 @@ const DirectMessage = () => {
     <Container>
       <Header>
         <img />
-        <span></span>
+        <span>{roomId}</span>
       </Header>
       <ChatList scrollbarRef={scrollbarRef} chatSections={chatSections} />
       <ChatBox
         onSubmitForm={onSubmitForm}
         chat={chat}
         onChangeChat={onChangeChat}
-        placeholder={`Message ${userData.nickname}`}
+        placeholder={`Message ${roomId}`}
         data={[]}
       />
     </Container>

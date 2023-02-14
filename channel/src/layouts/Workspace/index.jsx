@@ -29,6 +29,7 @@ const Workspace = () => {
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
   const [setShowInviteWorkspaceModal] = useState(false);
   const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
+
   const onClickUserProfile = useCallback(() => {
     setShowUserMenu((prev) => !prev);
   }, []);
@@ -41,6 +42,7 @@ const Workspace = () => {
   const onClickAddChannel = useCallback(() => {
     setShowCreateChannelModal(true);
   }, []);
+
   // const onLogout = useCallback(() => {
   //   axios
   //     .post('/api/users/logout', null, {

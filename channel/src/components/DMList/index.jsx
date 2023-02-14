@@ -3,7 +3,8 @@ import { CollapseButton } from "./styles";
 import { NavLink } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { channelMemberSelector } from "../../store/channelAtom";
-
+import { GoTriangleDown } from "react-icons/go";
+// eslint-disable-next-line react/prop-types
 const DMList = () => {
   const channel = "일반채널";
   const [channelCollapse, setChannelCollapse] = useState(false);
@@ -13,6 +14,7 @@ const DMList = () => {
   const [countList, setCountList] = useState({});
   const [onlineList] = useState([]);
   const memberData = useRecoilValue(channelMemberSelector(channel));
+
   //const userData = fetch("http://localhost:8081/user/list");
   const resetCount = useCallback(
     (id) => () => {
@@ -32,11 +34,7 @@ const DMList = () => {
           collapse={channelCollapse}
           onClick={toggleChannelCollapse}
         >
-          <i
-            className="c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline"
-            data-qa="channel-section-collapse"
-            aria-hidden="true"
-          />
+          <GoTriangleDown />
         </CollapseButton>
         <span>Direct Messages</span>
       </h2>

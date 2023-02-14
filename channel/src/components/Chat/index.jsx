@@ -11,8 +11,8 @@ const Chat = ({ data }) => {
       </div>
       <div className="chat-text">
         <div className="chat-user">
-          <b>안녕</b>
-          <span>하이루</span>
+          <b></b>
+          <span>{data}</span>
         </div>
         <p></p>
       </div>

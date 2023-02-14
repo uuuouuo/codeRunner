@@ -3,6 +3,7 @@ import { CollapseButton } from "../DMList/styles";
 import { NavLink, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { channelListSelector } from "../../store/channelAtom";
+import { GoTriangleDown } from "react-icons/go";
 const ChannelList = () => {
   const [channelCollapse, setChannelCollapse] = useState(false);
   const [channelData] = useRecoilState(channelListSelector);
@@ -33,11 +34,7 @@ const ChannelList = () => {
           collapse={channelCollapse}
           onClick={toggleChannelCollapse}
         >
-          <i
-            className="c-icon p-channel_sidebar__section_heading_expand p-channel_sidebar__section_heading_expand--show_more_feature c-icon--caret-right c-icon--inherit c-icon--inline"
-            data-qa="channel-section-collapse"
-            aria-hidden="true"
-          />
+          <GoTriangleDown />
         </CollapseButton>
         <span>Channels</span>
       </h2>

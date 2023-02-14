@@ -21,7 +21,6 @@ const CreateChannelModal = ({
       axios
         .post(`http://localhost:8082/channel/post`, {
           name: newChannel,
-          user_id: "",
         })
         .then(() => {
           setShowCreateChannelModal(false);
@@ -32,7 +31,7 @@ const CreateChannelModal = ({
           toast.error(error.response?.data, { position: "bottom-center" });
         });
     },
-    [newChannel]
+    [newChannel, setShowCreateChannelModal, setNewChannel]
   );
   return (
     <Modal show={show} onCloseModal={onCloseModal}>
@@ -45,7 +44,7 @@ const CreateChannelModal = ({
             onChange={onChangeNewChannel}
           />
         </Label>
-        <Button>생성하기</Button>
+        <Button type="submit">생성하기</Button>
       </form>
     </Modal>
   );
