@@ -1,18 +1,18 @@
-import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
-export const client = new Client({
-  brokerURL: "ws://localhost:8083/ws-stomp",
-  debug: function (str) {
-    console.log(str);
-  },
-  reconnectDelay: 5000,
-  heartbeatIncoming: 4000,
-  heartbeatOutgoing: 4000,
-});
-
-client.onStompError = function (frame) {
-  console.log("Broker reported error: " + frame.headers["message"]);
-  console.log("Additional details: " + frame.body);
+const sock = new SockJS("http://localhost:8083/ws-stomp");
+sock.onopen = function () {
+  console.log("open");
+  sock.send("test");
 };
 
-client.activate();
+sock.onmessage = function (e) {
+  console.log("message", e.data);
+  sock.close();
+};
+
+sock.onclose = function () {
+  console.log("close");
+};
+export let stompClient = Stomp.over(sock);

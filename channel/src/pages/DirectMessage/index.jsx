@@ -7,7 +7,7 @@ import { Container, Header } from "./styles";
 import { channelMemberSelector } from "../../store/channelAtom";
 import useInput from "../../hooks/useInput";
 import makeSection from "../../utils/makeSection";
-import { client } from "../../utils/socketClient";
+import { stompClient } from "../../utils/socketClient";
 //import axios from "axios";
 const DirectMessage = () => {
   const { roomId } = useParams();
@@ -16,20 +16,11 @@ const DirectMessage = () => {
   // 위에 부분 수정해야함
   const [chat, onChangeChat] = useInput("");
   let chatData = "";
-  client.onConnect = () => {
-    client.subscribe(
-      `/sub/chat/room/${roomId}`,
-      (message) => (chatData = `${message.body}`)
-    );
-    client.publish({
-      destination: "/pub/chat/message",
-      body: "First Message",
-      skipContentLengthHeader: true,
-    });
-  };
   const scrollbarRef = useRef(null);
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
-
+  stompClient.connect({}, () => {
+    console.log("connected!");
+  });
   const onSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
