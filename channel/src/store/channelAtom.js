@@ -1,17 +1,17 @@
 import { atom, selector, selectorFamily } from "recoil";
 import axios from "axios";
 
-export const channelListAtom = atom({
-  key: "channelList",
-  default: [],
+export const RoomIdAtom = atom({
+  key: "roomId",
+  default: "",
 });
 export const channelDataAtom = atom({
   key: "channelData",
   default: [],
 });
 
-export const channelMembersAtom = atom({
-  key: "channelMembers",
+export const DMListAtom = atom({
+  key: "DMList",
   default: [],
 });
 
@@ -40,7 +40,6 @@ export const channelListSelector = selector({
       console.error(err);
     }
   },
-  set: ({ set }, newValue) => set(channelListAtom, newValue),
 });
 
 export const channelMemberSelector = selectorFamily({

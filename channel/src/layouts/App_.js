@@ -9,7 +9,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<Workspace />}>
         <Route path="/channel/:id" element={<Channel />} />
-        <Route path="/dm/:roomId" element={<DirectMessage />} />
+        <Route path="/dm/:id" element={<DirectMessage />} />
       </Route>
     </Routes>
   </Suspense>
