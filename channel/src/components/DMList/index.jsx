@@ -15,7 +15,6 @@ const DMList = () => {
   const [onlineList] = useState([]);
   const memberData = useRecoilValue(channelMemberSelector(channel));
 
-  //const userData = fetch("http://localhost:8081/user/list");
   const resetCount = useCallback(
     (id) => () => {
       setCountList((list) => {

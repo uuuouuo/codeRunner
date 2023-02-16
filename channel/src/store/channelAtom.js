@@ -3,17 +3,32 @@ import axios from "axios";
 
 export const channelListAtom = atom({
   key: "channelList",
-  default: "",
+  default: [],
 });
 export const channelDataAtom = atom({
   key: "channelData",
-  default: "",
+  default: [],
 });
 
 export const channelMembersAtom = atom({
   key: "channelMembers",
-  default: "",
+  default: [],
 });
+
+export const channelTemp = atom({
+  key: "channelTemp",
+  default: [],
+});
+
+export const fetchChannelList = async () => {
+  try {
+    const { data } = await axios.get("http://localhost:8082/channel/get");
+    return data;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+};
 
 export const channelListSelector = selector({
   key: "channelListSelector",
@@ -25,6 +40,7 @@ export const channelListSelector = selector({
       console.error(err);
     }
   },
+  set: ({ set }, newValue) => set(channelListAtom, newValue),
 });
 
 export const channelMemberSelector = selectorFamily({

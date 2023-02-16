@@ -56,6 +56,16 @@ const Workspace = () => {
     setShowCreateChannelModal(false);
     setShowInviteWorkspaceModal(false);
   }, []);
+  // const temp2 = useRecoilState(channelListSelector);
+  // const temp = useCallback(() => {
+  //   useRecoilState(channelListSelector);
+  // }, []);
+
+  // useEffect(() => {
+  //   temp2();
+  //   // channelListSelector
+  // }, [showCreateChannelModal]);
+
   return (
     <div>
       <Header>

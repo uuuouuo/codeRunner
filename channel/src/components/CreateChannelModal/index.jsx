@@ -5,6 +5,8 @@ import axios from "axios";
 import { Button, Input, Label } from "./styles";
 import { toast } from "react-toastify";
 import useInput from "../../hooks/useInput";
+import { useRecoilState } from "recoil";
+import { channelTemp, fetchChannelList } from "../../store/channelAtom";
 
 const CreateChannelModal = ({
   show,
@@ -12,6 +14,14 @@ const CreateChannelModal = ({
   setShowCreateChannelModal,
 }) => {
   const [newChannel, onChangeNewChannel, setNewChannel] = useInput("");
+  const [, setChannelListData] = useRecoilState(channelTemp);
+
+  const updateChannelData = async () => {
+    const response = await fetchChannelList();
+    console.log("updateChannelData modal", response);
+    setChannelListData(response);
+  };
+
   const onCreateChannel = useCallback(
     (e) => {
       e.preventDefault();
@@ -22,7 +32,8 @@ const CreateChannelModal = ({
         .post(`http://localhost:8082/channel/post`, {
           name: newChannel,
         })
-        .then(() => {
+        .then(async () => {
+          await updateChannelData();
           setShowCreateChannelModal(false);
           setNewChannel("");
         })

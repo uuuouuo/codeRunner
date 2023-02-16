@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useCallback, useEffect } from "react";
 import { CollapseButton } from "../DMList/styles";
 import { NavLink, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { channelListSelector } from "../../store/channelAtom";
+import { channelTemp, fetchChannelList } from "../../store/channelAtom";
 import { GoTriangleDown } from "react-icons/go";
+
 const ChannelList = () => {
   const [channelCollapse, setChannelCollapse] = useState(false);
-  const [channelData] = useRecoilState(channelListSelector);
+  const [channelData, setChannelData] = useRecoilState(channelTemp);
   const toggleChannelCollapse = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
@@ -27,6 +29,16 @@ const ChannelList = () => {
     setCountList({});
   }, [location]);
 
+  const updateChannelData = async () => {
+    const response = await fetchChannelList();
+    console.log("updateChannelData", response);
+    setChannelData(response);
+  };
+
+  // useEffect(() => {
+  //   updateChannelData();
+  // }, []);
+
   return (
     <>
       <h2>
@@ -40,11 +52,11 @@ const ChannelList = () => {
       </h2>
       <div>
         {!channelCollapse &&
-          channelData?.map((channel) => {
+          channelData.map((channel, index) => {
             const count = countList[`c-${channel.channel_id}`];
             return (
               <NavLink
-                key={channel.name}
+                key={`${channel.name}-${index}`}
                 activeClassName="selected"
                 to={`/channel/${channel.name}`}
                 onClick={resetCount(`c-${channel.channel_id}`)}
