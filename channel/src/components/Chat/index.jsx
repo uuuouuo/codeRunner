@@ -3,7 +3,7 @@ import { ChatWrapper } from "./styles";
 
 // eslint-disable-next-line react/prop-types
 const Chat = ({ data }) => {
-  data;
+  console.dir(data);
   return (
     <ChatWrapper>
       <div className="chat-img">

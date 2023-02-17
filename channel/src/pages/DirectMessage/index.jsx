@@ -24,7 +24,6 @@ const DirectMessage = () => {
     connectSocket();
     return () => {
       StompClient.unsubscribe;
-      sock.close;
     };
   }, [Chatroom]);
 
@@ -43,7 +42,10 @@ const DirectMessage = () => {
       });
   };
   const sock = new SockJS("http://localhost:8083/ws-stomp");
-  const StompClient = Stomp.over(sock);
+  const StompClient = Stomp.over(() => {
+    return sock;
+  });
+  StompClient.reconnect_delay = 5000;
   const [chat, onChangeChat] = useInput("");
   let [chatData, setChatData] = useState([]);
   const scrollbarRef = useRef(null);
@@ -82,10 +84,18 @@ const DirectMessage = () => {
       { "client-id": "my-client-id" },
       "",
       () => {
-        StompClient.subscribe(`sub/chat/room/${roomId}`, (message) => {
-          console.log(message);
-          setChatData(message);
-        });
+        StompClient.subscribe(
+          `sub/chat/room/${roomId}`,
+          (message) => {
+            if (message.body) {
+              alert("got message with body " + message.body);
+              setChatData(message.body);
+            } else {
+              alert("got empty message");
+            }
+          },
+          { id: "sub-0" }
+        );
       },
       function (frame) {
         console.log(frame + "Web socket disconnected");
@@ -94,21 +104,6 @@ const DirectMessage = () => {
 
     // set
   };
-
-  // const sendMessage = () => {
-  //   ref~~.
-  // }
-
-  // useEffect(() => {
-  //   connectSocket();
-
-  //   return () => {
-  //     if (ref~~~) {
-  //       StompClient.unsub~~
-  //       sock.disn~
-  //     }
-  //   }
-  // }, []);
 
   return (
     <Container>
