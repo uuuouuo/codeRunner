@@ -68,5 +68,4 @@ export const channelDataSelector = selectorFamily({
       console.err(err);
     }
   },
-  set: ({ set }, newValue) => set(channelDataAtom, newValue),
 });

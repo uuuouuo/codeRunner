@@ -12,17 +12,18 @@ import { Stomp } from "@stomp/stompjs";
 import axios from "axios";
 import { DMListAtom } from "../../store/channelAtom";
 
-const sock = new SockJS("http://localhost:8083/ws-stomp");
-const StompClient = Stomp.over(() => {
-  return sock;
-});
-
 const DirectMessage = () => {
   const { id } = useParams();
   const [Chatroom, setChatRoom] = useRecoilState(DMListAtom);
   const [, setRoomId] = useRecoilState(RoomIdAtom);
-  setRoomId(id);
+  // eslint-disable-next-line no-unused-vars
+  const [prevChatData, setPrevChatData] = useState([]);
+  const sock = new SockJS("http://localhost:8083/ws-stomp");
+  const StompClient = Stomp.over(() => {
+    return sock;
+  });
   useEffect(() => {
+    setRoomId(id);
     chatRoomData();
   }, []);
   useEffect(() => {
@@ -31,7 +32,7 @@ const DirectMessage = () => {
       StompClient.unsubscribe;
       sock.close;
     };
-  }, [Chatroom]);
+  }, [Chatroom, StompClient]);
 
   const myData = "하하";
   const chatRoomData = async () => {
@@ -47,41 +48,6 @@ const DirectMessage = () => {
         console.log(error);
       });
   };
-
-  StompClient.reconnect_delay = 5000;
-  const [chat, onChangeChat] = useInput("");
-  let [chatData, setChatData] = useState([]);
-  const scrollbarRef = useRef(null);
-  const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
-  const roomId = Chatroom.roomId;
-  const onSubmitForm = useCallback(
-    (e) => {
-      e.preventDefault();
-      //  if (chat?.trim() && chatData) {
-      StompClient.send(
-        "/pub/chat/message",
-        {},
-        JSON.stringify({
-          roomId: roomId,
-          nickname: myData,
-          content: chat,
-        })
-      );
-    },
-    // },
-    [chat, roomId, myData, chatData]
-  );
-  useEffect(() => {
-    if (chatData?.length === 1) {
-      console.log(
-        "toBottomWhenLoaded",
-        chatData,
-        scrollbarRef.current?.getValues()
-      );
-      scrollbarRef.current?.scrollToBottom();
-    }
-  }, [chatData]);
-
   const connectSocket = () => {
     StompClient.connect(
       { "client-id": "my-client-id" },
@@ -104,9 +70,57 @@ const DirectMessage = () => {
         console.log(frame + "Web socket disconnected");
       }
     );
-
-    setChatData();
   };
+
+  StompClient.reconnect_delay = 5000;
+  const [chat, onChangeChat, setChat] = useInput("");
+  let [chatData, setChatData] = useState([]);
+  const scrollbarRef = useRef(null);
+  const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
+  const roomId = Chatroom.roomId;
+  const chatReceive = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8083/chat/room/${roomId}`
+      );
+      const prev = data.map((e, i) => {
+        return data[i].content;
+      });
+      setChatData(prev);
+      setChat("");
+      return prev;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onSubmitForm = useCallback(
+    (e) => {
+      e.preventDefault();
+      //  if (chat?.trim() && chatData) {
+      StompClient.send(
+        "/pub/chat/message",
+        {},
+        JSON.stringify({
+          roomId: roomId,
+          nickname: myData,
+          content: chat,
+        })
+      );
+      chatReceive();
+    },
+    // },
+    [chat, roomId, myData, chatData]
+  );
+  useEffect(() => {
+    if (chatData?.length === 1) {
+      console.log(
+        "toBottomWhenLoaded",
+        chatData,
+        scrollbarRef.current?.getValues()
+      );
+      scrollbarRef.current?.scrollToBottom();
+    }
+  }, [chatData]);
 
   return (
     <Container>

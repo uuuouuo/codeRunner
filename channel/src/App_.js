@@ -1,9 +1,10 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import Channel from "../pages/Channel";
+import Channel from "./pages/Channel";
 
-const Workspace = lazy(() => import("./Workspace"));
-const DirectMessage = lazy(() => import("../pages/DirectMessage"));
+const Workspace = lazy(() => import("./layouts/Workspace"));
+const DirectMessage = lazy(() => import("./pages/DirectMessage"));
+const LogIn = lazy(() => import("./pages/Login"));
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <Routes>
