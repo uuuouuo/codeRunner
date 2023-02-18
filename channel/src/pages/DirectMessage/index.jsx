@@ -12,6 +12,11 @@ import { Stomp } from "@stomp/stompjs";
 import axios from "axios";
 import { DMListAtom } from "../../store/channelAtom";
 
+const sock = new SockJS("http://localhost:8083/ws-stomp");
+const StompClient = Stomp.over(() => {
+  return sock;
+});
+
 const DirectMessage = () => {
   const { id } = useParams();
   const [Chatroom, setChatRoom] = useRecoilState(DMListAtom);
@@ -24,6 +29,7 @@ const DirectMessage = () => {
     connectSocket();
     return () => {
       StompClient.unsubscribe;
+      sock.close;
     };
   }, [Chatroom]);
 
@@ -41,10 +47,7 @@ const DirectMessage = () => {
         console.log(error);
       });
   };
-  const sock = new SockJS("http://localhost:8083/ws-stomp");
-  const StompClient = Stomp.over(() => {
-    return sock;
-  });
+
   StompClient.reconnect_delay = 5000;
   const [chat, onChangeChat] = useInput("");
   let [chatData, setChatData] = useState([]);
@@ -54,18 +57,18 @@ const DirectMessage = () => {
   const onSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
-      if (chat?.trim() && chatData) {
-        StompClient.send(
-          "/pub/chat/message",
-          {},
-          JSON.stringify({
-            roomId: roomId,
-            nickname: myData,
-            content: chat,
-          })
-        );
-      }
+      //  if (chat?.trim() && chatData) {
+      StompClient.send(
+        "/pub/chat/message",
+        {},
+        JSON.stringify({
+          roomId: roomId,
+          nickname: myData,
+          content: chat,
+        })
+      );
     },
+    // },
     [chat, roomId, myData, chatData]
   );
   useEffect(() => {
@@ -94,7 +97,7 @@ const DirectMessage = () => {
               alert("got empty message");
             }
           },
-          { id: "sub-0" }
+          { id: roomId }
         );
       },
       function (frame) {
@@ -102,7 +105,7 @@ const DirectMessage = () => {
       }
     );
 
-    // set
+    setChatData();
   };
 
   return (
