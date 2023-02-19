@@ -1,4 +1,4 @@
-import { CreateModal, CloseModalButton } from "../Modal/styles";
+import { CreateModal, CloseModalButton } from "./styles";
 import React, { useCallback } from "react";
 
 // eslint-disable-next-line react/prop-types

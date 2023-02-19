@@ -22,7 +22,7 @@ import {
   WorkspaceName,
   Workspaces,
   WorkspaceWrapper,
-} from "../Workspace/styles";
+} from "./styles";
 
 const Workspace = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);

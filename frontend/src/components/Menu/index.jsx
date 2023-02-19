@@ -1,4 +1,4 @@
-import { CreateMenu, CloseModalButton } from "../Menu/styles";
+import { CreateMenu, CloseModalButton } from "./styles";
 import React, { useCallback } from "react";
 // eslint-disable-next-line react/prop-types
 const Menu = ({ closeButton, style, show, children, onCloseModal }) => {

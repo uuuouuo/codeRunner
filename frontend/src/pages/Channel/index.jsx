@@ -1,4 +1,5 @@
-import React, { useCallback, useState, useRef } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import InviteChannelModal from "../../components/InviteChannelModal";
 import { Container, Header } from "./styles";
@@ -8,7 +9,8 @@ import { useRecoilValue } from "recoil";
 import useInput from "../../hooks/useInput";
 import { channelMemberSelector } from "../../store/channelAtom";
 import ChatList from "../../components/ChatList";
-//import { channelListSelector } from "../../store/channelAtom";
+import axios from "axios";
+import { channelListSelector } from "../../store/channelAtom";
 const PAGE_SIZE = 20;
 const Channel = () => {
   const { id } = useParams();
@@ -20,9 +22,17 @@ const Channel = () => {
     setShowInviteChannelModal(false);
   }, []);
   const channelMembersData = useRecoilValue(channelMemberSelector(id));
-  //const channelsData = useRecoilSelector(channelListSelector);
-  //const channelData = channelsData?.find((v) => v.name === channel);
-  const chatData = [1, 2, [3, 4]];
+  const getChannelId = useRecoilValue(channelListSelector);
+  const channel = getChannelId.find((x) => {
+    if (x.name == `${id}`) {
+      return true;
+    }
+  });
+  const channel_id = channel.channel_id;
+  useEffect(() => {
+    loadPosts();
+  }, []);
+  const [chatData, setChatData] = useState([]);
   const scrollbarRef = useRef(null);
   const [chat, onChangeChat] = useInput("");
   const isEmpty = chatData?.[0]?.length === 0;
@@ -30,38 +40,39 @@ const Channel = () => {
     isEmpty || (chatData && chatData[chatData.length - 1]?.length < PAGE_SIZE);
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
 
-  // const onSubmitForm = useCallback(
-  //   (e) => {
-  //     e.preventDefault();
-  //     if (chat?.trim() && chatData && channelData && userData) {
-  //       const savedChat = chat;
-  //       mutateChat((prevChatData) => {
-  //         prevChatData?.[0].unshift({
-  //           id: (chatData[0][0]?.id || 0) + 1,
-  //           content: savedChat,
-  //           UserId: userData.id,
-  //           User: userData,
-  //           createdAt: new Date(),
-  //           ChannelId: channelData.id,
-  //           Channel: channelData,
-  //         });
-  //         return prevChatData;
-  //       }, false).then(() => {
-  //         setChat("");
-  //         if (scrollbarRef.current) {
-  //           console.log("scrollToBottom!", scrollbarRef.current?.getValues());
-  //           scrollbarRef.current.scrollToBottom();
-  //         }
-  //       });
-  //       axios
-  //         .post(`/api/workspaces/${workspace}/channels/${channel}/chats`, {
-  //           content: savedChat,
-  //         })
-  //         .catch(console.error);
-  //     }
-  //   },
-  //   [chat, workspace, channel, channelData, userData, chatData]
-  // );
+  const loadPosts = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8082/channel/${channel_id}/posts/get`
+      );
+      console.dir(data);
+      const content = data.map((row) => row.content);
+      setChatData(content);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const writePosts = async () => {
+    try {
+      await axios.post("http://localhost:8082/channel/posts/write", {
+        id: channel_id,
+        user_id: 1,
+        content: chat,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSubmitForm = useCallback((e) => {
+    e.preventDefault();
+    loadPosts();
+    writePosts();
+    loadPosts();
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -96,7 +107,7 @@ const Channel = () => {
         chatSections={chatSections}
       />
       <ChatBox
-        //       onSubmitForm={onSubmitForm}
+        onSubmitForm={onSubmitForm}
         chat={chat}
         onChangeChat={onChangeChat}
         placeholder={`Message #${id}`}
