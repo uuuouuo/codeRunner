@@ -8,9 +8,10 @@ const LogIn = lazy(() => import("./pages/Login"));
 const App = () => (
   <Suspense fallback={<div>Loading...</div>}>
     <Routes>
-      <Route path="/" element={<Workspace />}>
-        <Route path="/channel/:id" element={<Channel />} />
-        <Route path="/dm/:id" element={<DirectMessage />} />
+      <Route path="/" element={<LogIn />} />
+      <Route path="/workspace" element={<Workspace />}>
+        <Route path="/workspace/channel/:id" element={<Channel />} />
+        <Route path="/workspace/dm/:id" element={<DirectMessage />} />
       </Route>
     </Routes>
   </Suspense>

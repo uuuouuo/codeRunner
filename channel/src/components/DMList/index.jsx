@@ -1,20 +1,29 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CollapseButton } from "./styles";
 import { NavLink } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { channelMemberSelector } from "../../store/channelAtom";
 import { GoTriangleDown } from "react-icons/go";
+import axios from "axios";
 // eslint-disable-next-line react/prop-types
 const DMList = () => {
-  const channel = "일반채널";
   const [channelCollapse, setChannelCollapse] = useState(false);
+  useEffect(() => {
+    getMembers();
+  }, []);
   const toggleChannelCollapse = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
   const [countList, setCountList] = useState({});
   const [onlineList] = useState([]);
-  const memberData = useRecoilValue(channelMemberSelector(channel));
-
+  const [memberData, setMemberData] = useState([]);
+  const getMembers = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:8081/user/total/list");
+      setMemberData(data.response);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const resetCount = useCallback(
     (id) => () => {
       setCountList((list) => {
@@ -40,14 +49,14 @@ const DMList = () => {
       <div>
         {!channelCollapse &&
           memberData?.map((member) => {
-            const isOnline = onlineList.includes(member.nickname);
-            const count = countList[member.nickname] || 0;
+            const isOnline = onlineList.includes(member);
+            const count = countList[member] || 0;
             return (
               <NavLink
-                key={member.nickname}
+                key={member}
                 activeClassName="selected"
-                to={`/dm/${member.nickname}`}
-                onClick={resetCount(member.nickname)}
+                to={`/dm/${member}`}
+                onClick={resetCount(member)}
               >
                 <i
                   className={`c-icon p-channel_sidebar__presence_icon p-channel_sidebar__presence_icon--dim_enabled c-presence ${

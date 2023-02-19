@@ -11,7 +11,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import axios from "axios";
 import { DMListAtom } from "../../store/channelAtom";
-
+import gravatar from "gravatar";
 const DirectMessage = () => {
   const { id } = useParams();
   const [Chatroom, setChatRoom] = useRecoilState(DMListAtom);
@@ -121,11 +121,14 @@ const DirectMessage = () => {
       scrollbarRef.current?.scrollToBottom();
     }
   }, [chatData]);
-
+  const nickname = localStorage.getItem("nickname");
   return (
     <Container>
       <Header>
-        <img />
+        <img
+          src={gravatar.url(nickname, { s: "36px", d: "retro" })}
+          alt={nickname}
+        />
         <span>{id}</span>
       </Header>
       <ChatList scrollbarRef={scrollbarRef} chatSections={chatSections} />

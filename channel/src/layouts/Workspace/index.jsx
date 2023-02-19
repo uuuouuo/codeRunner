@@ -6,7 +6,7 @@ import CreateChannelModal from "../../components/CreateChannelModal";
 import DMList from "../../components/DMList";
 import InviteChannelModal from "../../components/InviteChannelModal";
 import Menu from "../../components/Menu";
-
+import gravatar from "gravatar";
 import {
   AddButton,
   Channels,
@@ -65,26 +65,34 @@ const Workspace = () => {
   //   temp2();
   //   // channelListSelector
   // }, [showCreateChannelModal]);
-
+  const nickname = localStorage.getItem("nickname");
   return (
     <div>
       <Header>
         <RightMenu>
           <span onClick={onClickUserProfile}>
-            <ProfileImg />
-            {showUserMenu && (
-              <Menu>
-                <ProfileModal>
-                  <img />
-                  <div>
-                    <span></span>
-                    <span></span>
-                  </div>
-                </ProfileModal>
-                <LogOutButton>로그아웃</LogOutButton>
-              </Menu>
-            )}
+            {" "}
+            <ProfileImg
+              src={gravatar.url(nickname, { s: "28px", d: "retro" })}
+              alt={nickname}
+            />
           </span>
+          <ProfileImg />
+          {showUserMenu && (
+            <Menu>
+              <ProfileModal>
+                <img
+                  src={gravatar.url(nickname, { s: "28px", d: "retro" })}
+                  alt={nickname}
+                />
+                <div>
+                  <span></span>
+                  <span></span>
+                </div>
+              </ProfileModal>
+              <LogOutButton>로그아웃</LogOutButton>
+            </Menu>
+          )}
         </RightMenu>
       </Header>
       <WorkspaceWrapper>

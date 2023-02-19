@@ -35,11 +35,12 @@ const ChatBox = ({ onSubmitForm, chat, onChangeChat, placeholder, data }) => {
       if (!data) {
         return null;
       }
+      const nickname = localStorage.getItem("nickname");
       return (
         <EachMention focus={focus}>
           <img
-            src={gravatar.url(data[index].userId, { s: "20px", d: "retro" })}
-            alt={data[index].nickname}
+            src={gravatar.url(nickname, { s: "20px", d: "retro" })}
+            alt={nickname}
           />
           <span>{highlightedDisplay}</span>
         </EachMention>
