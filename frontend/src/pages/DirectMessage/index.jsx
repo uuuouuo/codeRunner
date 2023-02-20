@@ -12,6 +12,7 @@ import { Stomp } from "@stomp/stompjs";
 import axios from "axios";
 import { DMListAtom } from "../../store/channelAtom";
 import gravatar from "gravatar";
+
 const DirectMessage = () => {
   const { id } = useParams();
   const [Chatroom, setChatRoom] = useRecoilState(DMListAtom);
@@ -22,6 +23,8 @@ const DirectMessage = () => {
   const StompClient = Stomp.over(() => {
     return sock;
   });
+
+  StompClient.reconnect_delay = 5000;
   useEffect(() => {
     setRoomId(id);
     chatRoomData();
@@ -34,12 +37,12 @@ const DirectMessage = () => {
     };
   }, [Chatroom, StompClient]);
 
-  const myData = "하하";
+  const nickname = localStorage.getItem("nickname");
   const chatRoomData = async () => {
     await axios
       .post("http://localhost:8083/chat/room", {
         name: id,
-        nicknames: [myData, "가인"],
+        nicknames: [nickname, id],
       })
       .then((response) => {
         setChatRoom(response.data.response);
@@ -58,7 +61,6 @@ const DirectMessage = () => {
           (message) => {
             if (message.body) {
               alert("got message with body " + message.body);
-              setChatData(message.body);
             } else {
               alert("got empty message");
             }
@@ -71,10 +73,8 @@ const DirectMessage = () => {
       }
     );
   };
-
-  StompClient.reconnect_delay = 5000;
   const [chat, onChangeChat, setChat] = useInput("");
-  let [chatData, setChatData] = useState([]);
+  const [chatData, setChatData] = useState([]);
   const scrollbarRef = useRef(null);
   const chatSections = makeSection(chatData ? chatData.flat().reverse() : []);
   const roomId = Chatroom.roomId;
@@ -87,7 +87,6 @@ const DirectMessage = () => {
         return data[i].content;
       });
       setChatData(prev);
-      setChat("");
       return prev;
     } catch (error) {
       console.log(error);
@@ -96,20 +95,22 @@ const DirectMessage = () => {
   const onSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
+      chatReceive();
       //  if (chat?.trim() && chatData) {
       StompClient.send(
         "/pub/chat/message",
         {},
         JSON.stringify({
           roomId: roomId,
-          nickname: myData,
+          nickname: nickname,
           content: chat,
         })
       );
-      chatReceive();
+      setChatData([...chatData, chat]);
+      setChat("");
     },
     // },
-    [chat, roomId, myData, chatData]
+    [chat, roomId, nickname, chatData, setChat]
   );
   useEffect(() => {
     if (chatData?.length === 1) {
@@ -121,7 +122,6 @@ const DirectMessage = () => {
       scrollbarRef.current?.scrollToBottom();
     }
   }, [chatData]);
-  const nickname = localStorage.getItem("nickname");
   return (
     <Container>
       <Header>
