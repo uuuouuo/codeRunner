@@ -24,7 +24,6 @@ const DirectMessage = () => {
     return sock;
   });
 
-  StompClient.reconnect_delay = 5000;
   useEffect(() => {
     setRoomId(id);
     chatRoomData();
@@ -73,6 +72,9 @@ const DirectMessage = () => {
       }
     );
   };
+  useEffect(() => {
+    chatReceive();
+  }, []);
   const [chat, onChangeChat, setChat] = useInput("");
   const [chatData, setChatData] = useState([]);
   const scrollbarRef = useRef(null);
@@ -95,7 +97,6 @@ const DirectMessage = () => {
   const onSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
-      chatReceive();
       //  if (chat?.trim() && chatData) {
       StompClient.send(
         "/pub/chat/message",
