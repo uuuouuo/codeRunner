@@ -1,26 +1,21 @@
 import React, { useCallback, useState } from "react";
 import useInput from "../../hooks/useInput";
 import { Header, Form, Label, Input, Button } from "./styles";
-import { redirect } from "react-router-dom";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
   const [nickname, onChangeNickname] = useInput("");
   const [login, setLogin] = useState(false);
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      localStorage.setItem("nickname", nickname);
       axios
-        .post(
-          "http://localhost:8081/user/login",
-          { nickname: nickname },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          console.log(response.data.message);
+        .post(`http://localhost:8081/user/${nickname}`, {
+          params: { nickname: nickname },
+        })
+        .then(() => {
           setLogin(true);
           localStorage.setItem("nickname", nickname);
         })
@@ -31,7 +26,7 @@ const Login = () => {
     [nickname]
   );
   if (login) {
-    return redirect("/workspace/channel/일반채널");
+    navigate("/workspace/channel/일반채널");
   }
   return (
     <div id="container">

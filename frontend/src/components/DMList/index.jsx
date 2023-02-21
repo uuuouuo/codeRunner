@@ -3,7 +3,6 @@ import { CollapseButton } from "./styles";
 import { NavLink } from "react-router-dom";
 import { GoTriangleDown } from "react-icons/go";
 import axios from "axios";
-// eslint-disable-next-line react/prop-types
 const DMList = () => {
   const [channelCollapse, setChannelCollapse] = useState(false);
   useEffect(() => {
@@ -14,7 +13,7 @@ const DMList = () => {
   }, []);
   const [countList, setCountList] = useState({});
   const [onlineList] = useState([]);
-  const [memberData, setMemberData] = useState([]);
+  const [memberData, setMemberData] = useState();
   const getMembers = async () => {
     try {
       const { data } = await axios.get("http://localhost:8081/user/total/list");
@@ -35,6 +34,7 @@ const DMList = () => {
     },
     []
   );
+
   return (
     <>
       <h2>
@@ -48,14 +48,15 @@ const DMList = () => {
       </h2>
       <div>
         {!channelCollapse &&
-          memberData?.map((member) => {
+          memberData?.map((member, index) => {
             const isOnline = onlineList.includes(member);
             const count = countList[member] || 0;
             return (
               <NavLink
-                key={member}
+                key={index}
                 activeClassName="selected"
-                to={`/dm/${member}`}
+                to={`../../dm/${member}`}
+                relative="path"
                 onClick={resetCount(member)}
               >
                 <i
@@ -70,10 +71,8 @@ const DMList = () => {
                   data-qa-presence-active="false"
                   data-qa-presence-dnd="false"
                 />
-                <span className={count > 0 ? "bold" : undefined}>
-                  {member.nickname}
-                </span>
-                {/* {member.nickname === userData?.nickname && <span> (나)</span>} */}
+                <span className={count > 0 ? "bold" : undefined}>{member}</span>
+
                 {count > 0 && <span className="count">{count}</span>}
               </NavLink>
             );

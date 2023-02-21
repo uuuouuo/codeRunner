@@ -38,7 +38,6 @@ const CreateChannelModal = ({
           setNewChannel("");
         })
         .catch((error) => {
-          console.dir(error);
           toast.error(error.response?.data, { position: "bottom-center" });
         });
     },

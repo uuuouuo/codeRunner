@@ -31,14 +31,12 @@ const ChannelList = () => {
 
   const updateChannelData = async () => {
     const response = await fetchChannelList();
-    console.log("updateChannelData", response);
     setChannelData(response);
   };
 
-  // useEffect(() => {
-  //   updateChannelData();
-  // }, []);
-
+  useEffect(() => {
+    updateChannelData();
+  }, []);
   return (
     <>
       <h2>
@@ -58,7 +56,8 @@ const ChannelList = () => {
               <NavLink
                 key={`${channel.name}-${index}`}
                 activeClassName="selected"
-                to={`/channel/${channel.name}`}
+                to={`../${channel.name}`}
+                relative="path"
                 onClick={resetCount(`c-${channel.channel_id}`)}
               >
                 <span
