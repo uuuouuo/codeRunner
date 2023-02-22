@@ -1,0 +1,32 @@
+{
+  "name": "channel-service",
+  "version": "1.0.0",
+  "description": "스마일게이트 개발 캠프 2022 - 윈터 개발 캠프 2기 - codeRunner",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sgdevcamp2022/coderunner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sgdevcamp2022/coderunner/issues"
+  },
+  "homepage": "https://github.com/sgdevcamp2022/coderunner#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.0"
+  }
+}
