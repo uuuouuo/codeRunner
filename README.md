@@ -34,6 +34,10 @@
 - Node.js
 - MySQL
 
+## 🏠 아키텍처
+
+
+
 ## 💻 주요기능
 ### 회원가입/로그인
 <img src="https://user-images.githubusercontent.com/84880886/220948637-25907041-ec38-4fe4-b7f6-fac59f8ce087.png" width="860"/>
