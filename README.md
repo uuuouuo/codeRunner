@@ -3,7 +3,11 @@
 
 ## 😁 프로젝트 소개
 
+<br/>
+
 팀원 모두에게 익숙한 협업툴 Slack을 주제로 한 클론 프로젝트
+
+<br/>
 
 ## 👥 팀원 및 역할 소개
 
@@ -60,7 +64,42 @@
 
 ## 📂 디렉토리 구조
 ### Frontend
-### Backend
+```├─ README.md
+├─ public
+├─ .eslintrc.js
+├─ packagelock.json
+├─ package.json
+└─ src
+   ├─ App.test.js
+   ├─ index_.css
+   ├─ index.js
+   ├─ App_.css
+   ├─ App_.js             라우터
+   ├─ components          컴포넌트
+   │  ├─ ChannelList
+   │  ├─ Chat
+   │  ├─ Chatbox
+   │  ├─ ChatList
+   │  ├─ CreateChannelModal
+   │  ├─ DMList
+   │  ├─ InviteChannelModal
+   │  ├─ Menu
+   │  └─ Modal
+   ├─ hooks               리액트 훅
+   │  └─useInput.js
+   ├─ store               상태 관리
+   │  └─channelAtom.js
+   ├─ layouts             레이아웃
+   │  └─Workspace
+   ├─ utils               유틸리티 함수
+   │  └─ makeSection.js
+   └─ pages               라우터에 있는 페이지들
+      ├─ Channel
+      ├─ DirectMessage
+      └─ Login
+  
+
+``` 
 
 ## ✨ 깃 브랜치전략
 
