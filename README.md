@@ -36,6 +36,7 @@
 
 ## 🏠 아키텍처
 
+![image](https://user-images.githubusercontent.com/84880886/221740955-2f0d4776-71d1-4783-ba63-265de2eddf4a.png)
 
 
 ## 💻 주요기능
